@@ -13,7 +13,7 @@ export default function DashboardLayout() {
         {/* Columna: contenido crece, footer al final */}
         <div className="min-h-full flex flex-col">
           {/* Contenido */}
-          <div className="grow px-6 py-10">
+          <div className="grow">
             <Outlet />
           </div>
 

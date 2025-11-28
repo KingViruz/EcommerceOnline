@@ -1,11 +1,15 @@
-/** ====== Tarjeta de producto ====== */
+import React from "react";
+import { useNavigate } from "react-router-dom";
+
 
 export const ProductCard = ({ product, onAdd }) => {
+  const navigate = useNavigate();
   return (
     <div className="group relative w-64 shrink-0 snap-start rounded-xl overflow-hidden border border-gray-200 bg-white shadow-sm hover:shadow-md transition">
       {/* Imagen */}
       <div className="relative h-72 overflow-hidden">
         <img
+          onClick={() => navigate(`/home/productoDetalle/${product.id}`)} 
           src={product.image}
           alt={product.title}
           className="w-full h-full object-cover group-hover:scale-[1.03] transition-transform"
@@ -28,8 +32,8 @@ export const ProductCard = ({ product, onAdd }) => {
 
         {/* Boton al hover */}
         <button
-          onClick={() => onAdd(product)}
-          className="absolute left-1/2 -translate-x-1/2 bottom-3 opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all bg-black text-white text-sm px-4 py-2 rounded-md shadow"
+          onClick={() => onAdd && onAdd(product)}
+          className="absolute left-1/2 -translate-x-1/2 bottom-3 opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all bg-black text-white text-sm px-4 py-2 rounded-md shadow cursor-pointer"
         >
           Añadir al Carrito
         </button>

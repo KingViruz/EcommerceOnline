@@ -1,74 +1,9 @@
 import React, { useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { FiShoppingCart, FiLogOut } from "react-icons/fi";
+import { products } from "../../services/common/products";
 import { ProductCard } from "../components/ProductCard";
-
-const products = [
-  {
-    id: "p1",
-    title: "Camisa Negra",
-    image: "https://images.unsplash.com/photo-1503341455253-b2e723bb3dbb?q=80&w=800&auto=format&fit=crop",
-    price: 209.99,
-    priceBefore: 300.0,
-    isNew: true,
-    discount: 30,
-    rating: 4.2,
-  },
-  {
-    id: "p2",
-    title: "Camisa Blanca",
-    image: "https://images.unsplash.com/photo-1512436991641-6745cdb1723f?q=80&w=800&auto=format&fit=crop",
-    price: 24.99,
-    isNew: true,
-    discount: 20,
-    rating: 5,
-  },
-  {
-    id: "p3",
-    title: "Combo Camisas",
-    image: "https://images.unsplash.com/photo-1512436991641-6745cdb1723f?q=80&w=800&auto=format&fit=crop",
-    price: 24.99,
-    isNew: true,
-    discount: 50,
-    rating: 4.6,
-  },
-  {
-    id: "p4",
-    title: "Zapatos de cuero",
-    image: "https://images.unsplash.com/photo-1533867617858-e7b97e060509?q=80&w=800&auto=format&fit=crop",
-    price: 24.99,
-    isNew: true,
-    discount: 15,
-    rating: 4.1,
-  },
-  {
-    id: "p5",
-    title: "Combo Camisas negras y blancas",
-    image: "https://images.unsplash.com/photo-1503341455253-b2e723bb3dbb?q=80&w=800&auto=format&fit=crop",
-    price: 24.99,
-    isNew: true,
-    discount: 50,
-    rating: 4.8,
-  },
-  {
-    id: "p6",
-    title: "Estampado",
-    image: "https://images.unsplash.com/photo-1503341455253-b2e723bb3dbb?q=80&w=800&auto=format&fit=crop",
-    price: 24.99,
-    isNew: true,
-    discount: 50,
-    rating: 4.9,
-  },
-  {
-    id: "p7",
-    title: "Camisilla",
-    image: "https://images.unsplash.com/photo-1512436991641-6745cdb1723f?q=80&w=800&auto=format&fit=crop",
-    price: 24.99,
-    isNew: true,
-    discount: 50,
-    rating: 4.3,
-  },
-];
+import { useCart } from "../../context/CartContext";
 
 export default function HomePage() {
   const scrollerRef = useRef(null);
@@ -78,6 +13,8 @@ export default function HomePage() {
   };
 
   const navigate = useNavigate();
+
+  const { addItem, totalItems } = useCart();
 
   const onLogout = () => {
     // para el futuro localStorage.removeItem("auth")
@@ -110,9 +47,10 @@ export default function HomePage() {
     el.scrollLeft = dragState.current.scrollLeft - walk;
   };
 
+  /* agregar al carrito */
   const handleAddEvent = (p) => {
-    // aqui necesito conectar al carrito despues / search como hacer un TODO en VS
-    console.log("Añadir al carrito:", p.id);
+    addItem(p, 1); 
+    console.log("Se anadio al carrito bien el product:", p.id);
   };
 
   return (
@@ -150,13 +88,15 @@ export default function HomePage() {
             type="button"
             className="relative ml-3 inline-flex items-center justify-center w-10 h-10 rounded-full border border-gray-200 hover:bg-gray-50"
             aria-label="Carrito"
-            // onClick={() => navigate('/home/carrito')}
+            onClick={() => navigate('/home/carrito')}
           >
             <FiShoppingCart/>
 
-            <span className="absolute -top-1 -right-1 text-[10px] px-1.5 py-0.5 rounded-full bg-black text-white">
-              2
-            </span>
+            {totalItems > 0 && (
+              <span className="absolute -top-1 -right-1 text-[10px] px-1.5 py-0.5 rounded-full bg-black text-white">
+                {totalItems}
+              </span>
+            )}
           </button>
 
           <button
@@ -172,10 +112,11 @@ export default function HomePage() {
 
         <nav className="border-t">
           <div className="max-w-7xl mx-auto px-4">
-            <ul className="flex items-center gap-12 text-gray-500 text-base">
+            <ul className="flex items-center gap-12 text-gray-500 text-base cursor-pointer">
               <li className="py-3 -mb-px border-b-2 border-black text-black font-semibold">Inicio</li>
               <li className="py-3 hover:text-black">Nosotros</li>
-              <li className="py-3 hover:text-black">Productos</li>
+              <li className="py-3 hover:text-black"
+              onClick={() => navigate("/home/productos")}>Productos</li>
               <li className="py-3 hover:text-black">Contáctanos</li>
             </ul>
           </div>
